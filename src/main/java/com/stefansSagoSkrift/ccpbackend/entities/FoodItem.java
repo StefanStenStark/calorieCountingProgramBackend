@@ -14,4 +14,5 @@ public class FoodItem {
     private Long id;
     private String name;
     private double calories;
+    private String nutritionRating;
 }

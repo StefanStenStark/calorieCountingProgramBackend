@@ -20,4 +20,5 @@ public class FoodItemController {
         FoodItemDTO createdFoodItem = foodItemService.createFoodItem(foodItem);
         return ResponseEntity.ok().body(createdFoodItem);
     }
+
 }

@@ -6,4 +6,5 @@ import lombok.Data;
 public class FoodItemDTO {
     private String name;
     private double calories;
+    private String nutritionRating;
 }

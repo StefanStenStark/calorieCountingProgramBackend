@@ -7,6 +7,7 @@ import com.stefansSagoSkrift.ccpbackend.service.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,5 +21,14 @@ public class MealController {
     public ResponseEntity<MealDTO> createMeal(@RequestBody Meal meal){
         MealDTO createMeal = mealService.createMeal(meal);
         return ResponseEntity.ok().body(createMeal);
+    }
+
+    @PostMapping("/{mealId}/addFoodItem/{foodItemId}")
+    public ResponseEntity<MealDTO> addFoodItemToMeal(
+            @PathVariable Long mealId,
+            @PathVariable Long foodItemId
+    ){
+        MealDTO mealDTO = mealService.addFoodItemToMeal(mealId, foodItemId);
+        return ResponseEntity.ok().body(mealDTO);
     }
 }
