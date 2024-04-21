@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class MealDTO {
     private String name;
-    private List<FoodItem> foodItems  = new ArrayList<>();
+    private List<FoodItem> foodItems;
 }

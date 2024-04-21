@@ -14,7 +14,6 @@ public class Meal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
     @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL)
     private List<MealFoodItem> mealFoodItems = new ArrayList<>();
 }
