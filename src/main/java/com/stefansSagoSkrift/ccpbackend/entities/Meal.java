@@ -12,15 +12,11 @@ import java.util.List;
 public class Meal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "meal_food_item",
-            joinColumns = @JoinColumn(name = "meal_id"),
-            inverseJoinColumns = @JoinColumn(name = "food_item_id")
-    )
-    private List<FoodItem> foodItems  = new ArrayList<>();
-
+    @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL)
+    private List<MealFoodItem> mealFoodItems = new ArrayList<>();
 }
+
+
