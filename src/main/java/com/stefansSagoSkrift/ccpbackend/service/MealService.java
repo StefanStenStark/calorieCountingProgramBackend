@@ -3,6 +3,7 @@ package com.stefansSagoSkrift.ccpbackend.service;
 import com.stefansSagoSkrift.ccpbackend.DTOs.MealDTO;
 import com.stefansSagoSkrift.ccpbackend.entities.FoodItem;
 import com.stefansSagoSkrift.ccpbackend.entities.Meal;
+import com.stefansSagoSkrift.ccpbackend.entities.MealFoodItem;
 import com.stefansSagoSkrift.ccpbackend.repositories.FoodItemRepository;
 import com.stefansSagoSkrift.ccpbackend.repositories.MealRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,18 +29,25 @@ public class MealService {
         return mealInfo;
     }
 
-    public MealDTO addFoodItemToMeal(Long mealId, Long foodItemId) {
+    public MealDTO addFoodItemToMeal(Long mealId, Long foodItemId, double grams) {
+
         Meal meal = mealRepository.findById(mealId)
                 .orElseThrow(() -> new EntityNotFoundException("Meal not found with id: " + mealId));
         FoodItem foodItem = foodItemRepository.findById(foodItemId)
                 .orElseThrow(() -> new EntityNotFoundException("Food item not found with id: " + foodItemId));
 
-        meal.getFoodItems().add(foodItem);
+        MealFoodItem mealFoodItem = new MealFoodItem();
+        mealFoodItem.setMeal(meal);
+        mealFoodItem.setFoodItem(foodItem);
+        mealFoodItem.setGrams(grams);
+
+
+        meal.getMealFoodItems().add(mealFoodItem);
+
+
         mealRepository.save(meal);
 
-
         MealDTO mealInfo = new MealDTO();
-        mealInfo.setFoodItems(meal.getFoodItems());
         return mealInfo;
     }
 }
