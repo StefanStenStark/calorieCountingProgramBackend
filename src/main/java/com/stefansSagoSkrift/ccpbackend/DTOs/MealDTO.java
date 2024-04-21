@@ -1,9 +1,7 @@
 package com.stefansSagoSkrift.ccpbackend.DTOs;
 
 import com.stefansSagoSkrift.ccpbackend.entities.FoodItem;
-import lombok.Data;
-
-import java.util.ArrayList;
+import lombok.Data;import java.util.ArrayList;
 import java.util.List;
 
 @Data
