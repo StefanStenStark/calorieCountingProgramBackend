@@ -1,10 +1,7 @@
 package com.stefansSagoSkrift.ccpbackend.controllers;
 
-import com.stefansSagoSkrift.ccpbackend.DTOs.FoodItemDTO;
 import com.stefansSagoSkrift.ccpbackend.DTOs.MealDTO;
-import com.stefansSagoSkrift.ccpbackend.DTOs.MealFoodItemDTO;
-import com.stefansSagoSkrift.ccpbackend.entities.Meal;
-import com.stefansSagoSkrift.ccpbackend.entities.MealFoodItem;
+import com.stefansSagoSkrift.ccpbackend.entities.FoodItem;
 import com.stefansSagoSkrift.ccpbackend.service.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,31 +17,44 @@ public class MealController {
     @Autowired
     private MealService mealService;
 
-    @PostMapping("/createMeal")
-    public ResponseEntity<MealDTO> createMeal(@RequestBody Meal meal){
-        MealDTO createMeal = mealService.createMeal(meal);
+    @PostMapping("/createMealWithFoodItems")
+    public ResponseEntity<MealDTO> createMealWithFoodItems(@RequestBody MealDTO meal){
+        MealDTO createMeal = mealService.createMealWithFoodItems(meal);
         return ResponseEntity.ok().body(createMeal);
     }
 
     @PostMapping("/{mealId}/addFoodItem")
     public ResponseEntity<MealDTO> addFoodItemToMeal(
             @PathVariable Long mealId,
-            @RequestParam Long foodItemId,
-            @RequestParam double grams
-    ){
-        MealDTO mealDTO = mealService.addFoodItemToMeal(mealId, foodItemId, grams);
+            @RequestBody FoodItem foodItem
+            ){
+        MealDTO mealDTO = mealService.addFoodItemToMeal(mealId, foodItem);
         return ResponseEntity.ok().body(mealDTO);
     }
 
-    @GetMapping("/meals")
-    public ResponseEntity<List<MealDTO>> getAllMeals() {
-        List<MealDTO> mealDTOs = mealService.getAllMealDTOs();
-        return ResponseEntity.ok().body(mealDTOs);
+    @GetMapping("/allWithFoodItems")
+    public ResponseEntity<List<MealDTO>> getAllMealsWithFoodItems() {
+        List<MealDTO> meals = mealService.getAllMealsWithFoodItems();
+        return ResponseEntity.ok(meals);
     }
 
-    @GetMapping("/mealFoodItems")
-    public ResponseEntity<List<MealFoodItemDTO>> getAllMealFoodItems() {
-        List<MealFoodItemDTO> dtos = mealService.getAllMealFoodItemDTOs();
-        return ResponseEntity.ok().body(dtos);
+    @GetMapping("/mealWithFoodItems/{mealId}")
+    public ResponseEntity<MealDTO> getMealWithFoodItems(@PathVariable Long mealId) {
+        MealDTO mealDTO = mealService.getMealWithFoodItemsById(mealId);
+        if (mealDTO != null) {
+            return ResponseEntity.ok(mealDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+    @GetMapping("/allWithFoodItemsTemplates")
+    public ResponseEntity<List<MealDTO>> getAllMealsWithFoodItemsTemplates() {
+        List<MealDTO> meals = mealService.getAllMealsWithFoodItemsTemplates();
+        return ResponseEntity.ok(meals);
+    }
+
+
+
+
 }

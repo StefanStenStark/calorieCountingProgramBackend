@@ -6,6 +6,8 @@ import java.util.List;
 
 @Data
 public class MealDTO {
+    private Long id;
     private String name;
-    private List<FoodItem> foodItems;
+    private String type;
+    private List<FoodItemDTO> foodItemDTOS = new ArrayList<>();
 }

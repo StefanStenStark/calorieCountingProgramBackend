@@ -12,7 +12,16 @@ public class FoodItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private double calories;
+
+    private double grams;
+
     private String nutritionRating;
+
+    @ManyToOne
+    @JoinColumn(name = "meal_id")
+    private Meal meal;
 }

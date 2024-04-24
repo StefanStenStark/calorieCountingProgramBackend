@@ -13,9 +13,13 @@ public class Meal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL)
-    private List<MealFoodItem> mealFoodItems = new ArrayList<>();
+    private List<FoodItem> foodItems = new ArrayList<>();
+
+    private String type;
 }
 
 
