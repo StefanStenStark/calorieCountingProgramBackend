@@ -84,9 +84,10 @@ public class MealService {
                 .collect(Collectors.toList());
     }
 
-    public List<MealDTO> getAllMealsWithFoodItems() {
+    public List<MealDTO> getAllMealsWithNoTemplate() {
         List<Meal> meals = mealRepository.findAll();
         return meals.stream()
+                .filter(meal -> !meal.getType().toLowerCase().contains("template"))
                 .map(this::convertToMealDTO)
                 .collect(Collectors.toList());
     }

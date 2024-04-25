@@ -35,10 +35,16 @@ public class FoodItemController {
         return ResponseEntity.ok().body(foodItemDTO);
     }
 
-    @DeleteMapping("/deleteFoodItem/{mealId}/{foodItemId}")
-    public ResponseEntity<?> deleteFoodItem(@PathVariable Long mealId, @PathVariable Long foodItemId) {
+    @GetMapping("/getAllFoodItemsTemplate")
+    public ResponseEntity<List<FoodItemDTO>> getAllFoodItemsTemplate(){
+        List<FoodItemDTO> foodItemDTO = foodItemService.getAllFoodItemsTemplate();
+        return ResponseEntity.ok().body(foodItemDTO);
+    }
+
+    @DeleteMapping("/deleteFoodItem/{foodItemId}")
+    public ResponseEntity<?> deleteFoodItem(@PathVariable Long foodItemId) {
         try {
-            foodItemService.deleteFoodItem(mealId, foodItemId);
+            foodItemService.deleteFoodItem(foodItemId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error deleting food item: " + e.getMessage());

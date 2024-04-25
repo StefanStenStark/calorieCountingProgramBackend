@@ -19,6 +19,8 @@ public class FoodItem {
 
     private double grams;
 
+    private String type;
+
     private String nutritionRating;
 
     @ManyToOne

@@ -32,11 +32,7 @@ public class MealController {
         return ResponseEntity.ok().body(mealDTO);
     }
 
-    @GetMapping("/allWithFoodItems")
-    public ResponseEntity<List<MealDTO>> getAllMealsWithFoodItems() {
-        List<MealDTO> meals = mealService.getAllMealsWithFoodItems();
-        return ResponseEntity.ok(meals);
-    }
+
 
     @GetMapping("/mealWithFoodItems/{mealId}")
     public ResponseEntity<MealDTO> getMealWithFoodItems(@PathVariable Long mealId) {
@@ -48,9 +44,15 @@ public class MealController {
         }
     }
 
-    @GetMapping("/allWithFoodItemsTemplates")
+    @GetMapping("/allMealsWithTemplate")
     public ResponseEntity<List<MealDTO>> getAllMealsWithFoodItemsTemplates() {
         List<MealDTO> meals = mealService.getAllMealsWithFoodItemsTemplates();
+        return ResponseEntity.ok(meals);
+    }
+
+    @GetMapping("/allMealsWithNoTemplate")
+    public ResponseEntity<List<MealDTO>> getAllMealsWithNoTemplate() {
+        List<MealDTO> meals = mealService.getAllMealsWithNoTemplate();
         return ResponseEntity.ok(meals);
     }
 

@@ -9,5 +9,6 @@ public class FoodItemDTO {
     private String name;
     private double calories;
     private double grams;
+    private String type;
     private String nutritionRating;
 }
