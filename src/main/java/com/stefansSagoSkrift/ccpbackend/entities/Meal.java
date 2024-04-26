@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Generated;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class Meal {
     private List<FoodItem> foodItems = new ArrayList<>();
 
     private String type;
+
+    private LocalDateTime creationTime;
 }
 
 

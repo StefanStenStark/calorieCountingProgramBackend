@@ -2,12 +2,14 @@ package com.stefansSagoSkrift.ccpbackend.controllers;
 
 import com.stefansSagoSkrift.ccpbackend.DTOs.MealDTO;
 import com.stefansSagoSkrift.ccpbackend.entities.FoodItem;
+import com.stefansSagoSkrift.ccpbackend.entities.Meal;
 import com.stefansSagoSkrift.ccpbackend.service.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -32,8 +34,6 @@ public class MealController {
         return ResponseEntity.ok().body(mealDTO);
     }
 
-
-
     @GetMapping("/mealWithFoodItems/{mealId}")
     public ResponseEntity<MealDTO> getMealWithFoodItems(@PathVariable Long mealId) {
         MealDTO mealDTO = mealService.getMealWithFoodItemsById(mealId);
@@ -56,7 +56,18 @@ public class MealController {
         return ResponseEntity.ok(meals);
     }
 
-
-
-
+    @GetMapping("/allMealOnThisTime/{whatKindOfTime}")
+    public ResponseEntity<List<MealDTO>> getMealsForDate(@PathVariable String whatKindOfTime ){
+        List<MealDTO> meals = mealService.getMealsForDate(whatKindOfTime);
+        return ResponseEntity.ok(meals);
+    }
+    @DeleteMapping("deleteMeal/{mealId}")
+    public ResponseEntity<?> deleteMeal(@PathVariable Long mealId){
+        try{
+            mealService.deleteMeal(mealId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Error deleting meal: " + e.getMessage());
+        }
+    }
 }

@@ -10,6 +10,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +28,7 @@ public class MealService {
         Meal newMeal = new Meal();
         newMeal.setName(mealDTO.getName());
         newMeal.setType(mealDTO.getType());
+        newMeal.setCreationTime(LocalDateTime.now());
 
         newMeal = mealRepository.save(newMeal);
 
@@ -49,6 +53,7 @@ public class MealService {
         mealInfo.setId(newMeal.getId());
         mealInfo.setName(newMeal.getName());
         mealInfo.setType(newMeal.getType());
+        mealInfo.setCreationTime(newMeal.getCreationTime());
         mealInfo.setFoodItemDTOS(savedFoodItems.stream()
                 .map(this::convertToFoodItemDTO)
                 .collect(Collectors.toList()));
@@ -74,8 +79,6 @@ public class MealService {
         MealDTO mealInfo = new MealDTO();
         return mealInfo;
     }
-
-
     public List<MealDTO> getAllMealsWithFoodItemsTemplates() {
         List<Meal> meals = mealRepository.findAll();
         return meals.stream()
@@ -83,7 +86,6 @@ public class MealService {
                 .map(this::convertToMealDTO)
                 .collect(Collectors.toList());
     }
-
     public List<MealDTO> getAllMealsWithNoTemplate() {
         List<Meal> meals = mealRepository.findAll();
         return meals.stream()
@@ -91,7 +93,6 @@ public class MealService {
                 .map(this::convertToMealDTO)
                 .collect(Collectors.toList());
     }
-
     public MealDTO getMealWithFoodItemsById(Long mealId) {
         Optional<Meal> optionalMeal = mealRepository.findById(mealId);
         if (optionalMeal.isPresent()) {
@@ -100,6 +101,35 @@ public class MealService {
         } else {
             return null;
         }
+    }
+    public List<MealDTO> getMealsForDate(String whatKindOfTime) {
+        LocalDate minDate = LocalDate.now();
+        LocalDate maxDate = LocalDate.now();
+        if (whatKindOfTime.equals("day")){
+            minDate = LocalDate.now();
+        }
+        if (whatKindOfTime.equals("week")){
+            minDate = maxDate.minusWeeks(1);;
+        }
+        if (whatKindOfTime.equals("month")){
+            minDate = maxDate.minusMonths(1);
+        }
+        if (whatKindOfTime.equals("year")){
+            minDate = maxDate.minusYears(1);
+        }
+
+        LocalDateTime startDateTime = LocalDateTime.of(minDate, LocalTime.MIN);
+        LocalDateTime endDateTime = LocalDateTime.of(maxDate, LocalTime.MAX);
+
+        List<Meal> meals = mealRepository.findByCreationTimeBetween(startDateTime, endDateTime);
+        return meals.stream()
+                .filter(meal -> !meal.getType().toLowerCase().contains("template"))
+                .map(this::convertToMealDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteMeal(Long mealId) {
+        mealRepository.deleteById(mealId);
     }
 
     private MealDTO convertToMealDTO(Meal meal) {
@@ -115,7 +145,6 @@ public class MealService {
 
         return mealDTO;
     }
-
     private FoodItemDTO convertToFoodItemDTO(FoodItem foodItem) {
         FoodItemDTO foodItemDTO = new FoodItemDTO();
         foodItemDTO.setId(foodItem.getId());
