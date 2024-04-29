@@ -2,14 +2,11 @@ package com.stefansSagoSkrift.ccpbackend.controllers;
 
 import com.stefansSagoSkrift.ccpbackend.DTOs.MealDTO;
 import com.stefansSagoSkrift.ccpbackend.entities.FoodItem;
-import com.stefansSagoSkrift.ccpbackend.entities.Meal;
 import com.stefansSagoSkrift.ccpbackend.service.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -25,14 +22,6 @@ public class MealController {
         return ResponseEntity.ok().body(createMeal);
     }
 
-    @PostMapping("/{mealId}/addFoodItem")
-    public ResponseEntity<MealDTO> addFoodItemToMeal(
-            @PathVariable Long mealId,
-            @RequestBody FoodItem foodItem
-            ){
-        MealDTO mealDTO = mealService.addFoodItemToMeal(mealId, foodItem);
-        return ResponseEntity.ok().body(mealDTO);
-    }
 
     @GetMapping("/mealWithFoodItems/{mealId}")
     public ResponseEntity<MealDTO> getMealWithFoodItems(@PathVariable Long mealId) {

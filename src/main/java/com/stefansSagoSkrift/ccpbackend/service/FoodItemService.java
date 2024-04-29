@@ -25,33 +25,9 @@ public class FoodItemService {
 
         foodItemRepository.save(newFoodItem);
 
-        FoodItemDTO newFoodItemDTO = new FoodItemDTO();
-        newFoodItemDTO.setCalories(foodItem.getCalories());
-        newFoodItemDTO.setName(foodItem.getName());
-        newFoodItemDTO.setGrams(foodItem.getGrams());
-        newFoodItemDTO.setType(foodItem.getType());
-        newFoodItemDTO.setNutritionRating(foodItem.getNutritionRating());
+        FoodItemDTO newFoodItemDTO = convertFoodItemToDTO(newFoodItem);
 
         return newFoodItemDTO;
-    }
-
-    public FoodItemDTO updateFoodItem(FoodItem foodItem, Long foodId) {
-        FoodItem updatedFoodItem = foodItemRepository.findById(foodId)
-                .orElseThrow(() -> new EntityNotFoundException("Did not find item with id: " + foodId));
-
-        updatedFoodItem.setName(foodItem.getName());
-        updatedFoodItem.setCalories(foodItem.getCalories());
-        updatedFoodItem.setGrams(foodItem.getGrams());
-        updatedFoodItem.setNutritionRating(foodItem.getNutritionRating());
-
-        foodItemRepository.save(updatedFoodItem);
-
-        FoodItemDTO updatedFoodItemInfo = new FoodItemDTO();
-
-        updatedFoodItemInfo.setName(updatedFoodItem.getName());
-        updatedFoodItemInfo.setCalories(updatedFoodItem.getCalories());
-        updatedFoodItemInfo.setNutritionRating(updatedFoodItem.getNutritionRating());
-        return updatedFoodItemInfo;
     }
 
     public List<FoodItemDTO> getAllFoodItemsTemplate() {
@@ -69,6 +45,10 @@ public class FoodItemService {
                    .collect(Collectors.toList());
     }
 
+    public void deleteFoodItem(Long foodItemId) {
+        foodItemRepository.deleteById(foodItemId);
+    }
+
     private FoodItemDTO convertFoodItemToDTO(FoodItem foodItems) {
         FoodItemDTO dto = new FoodItemDTO();
         dto.setId(foodItems.getId());
@@ -80,8 +60,6 @@ public class FoodItemService {
         return dto;
     }
 
-    public void deleteFoodItem(Long foodItemId) {
-        foodItemRepository.deleteById(foodItemId);
-    }
+
 
 }

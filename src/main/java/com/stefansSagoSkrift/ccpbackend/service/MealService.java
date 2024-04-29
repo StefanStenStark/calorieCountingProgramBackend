@@ -29,11 +29,9 @@ public class MealService {
         newMeal.setName(mealDTO.getName());
         newMeal.setType(mealDTO.getType());
         newMeal.setCreationTime(LocalDateTime.now());
-
-        newMeal = mealRepository.save(newMeal);
+        mealRepository.save(newMeal);
 
         List<FoodItemDTO> foodItems = mealDTO.getFoodItemDTOS();
-
         List<FoodItem> savedFoodItems = new ArrayList<>();
 
         if (foodItems != null) {
@@ -45,40 +43,13 @@ public class MealService {
                 newFoodItem.setNutritionRating(foodItemDTO.getNutritionRating());
 
                 newFoodItem.setMeal(newMeal);
-
                 savedFoodItems.add(foodItemRepository.save(newFoodItem));
             }
         }
-        MealDTO mealInfo = new MealDTO();
-        mealInfo.setId(newMeal.getId());
-        mealInfo.setName(newMeal.getName());
-        mealInfo.setType(newMeal.getType());
-        mealInfo.setCreationTime(newMeal.getCreationTime());
-        mealInfo.setFoodItemDTOS(savedFoodItems.stream()
-                .map(this::convertToFoodItemDTO)
-                .collect(Collectors.toList()));
-        return mealInfo;
+
+        return convertToMealDTO(newMeal);
     }
 
-
-    public MealDTO addFoodItemToMeal(Long mealId, FoodItem foodItem) {
-
-        Meal meal = mealRepository.findById(mealId)
-                .orElseThrow(() -> new EntityNotFoundException("Meal not found with id: " + mealId));
-
-        FoodItem theNewFoodItem = new FoodItem();
-        theNewFoodItem.setName(foodItem.getName());
-        theNewFoodItem.setCalories(foodItem.getCalories());
-        theNewFoodItem.setGrams(foodItem.getGrams());
-        theNewFoodItem.setMeal(meal);
-
-        foodItemRepository.save(theNewFoodItem);
-        mealRepository.save(meal);
-
-
-        MealDTO mealInfo = new MealDTO();
-        return mealInfo;
-    }
     public List<MealDTO> getAllMealsWithFoodItemsTemplates() {
         List<Meal> meals = mealRepository.findAll();
         return meals.stream()

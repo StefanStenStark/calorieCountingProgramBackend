@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table
 public class FoodItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

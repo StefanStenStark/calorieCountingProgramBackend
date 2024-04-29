@@ -23,11 +23,6 @@ public class FoodItemController {
         return ResponseEntity.ok().body(createdFoodItem);
     }
 
-    @PostMapping("/updateFoodItem/{mealId}")
-    public ResponseEntity<FoodItemDTO> updateFoodItem(@RequestBody FoodItem foodItem, @PathVariable Long mealId){
-        FoodItemDTO updateFoodItem = foodItemService.updateFoodItem(foodItem, mealId);
-        return ResponseEntity.ok().body(updateFoodItem);
-    }
 
     @GetMapping("/getAllFoodItems")
     public ResponseEntity<List<FoodItemDTO>> getAllTheFoodItems(){
